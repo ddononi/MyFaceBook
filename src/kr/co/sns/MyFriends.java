@@ -1,0 +1,182 @@
+package kr.co.sns;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import kr.co.sns.MyProfile.MyFeedListener;
+import kr.co.sns.MyProfile.MyProfileRequestListener;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
+
+public class MyFriends extends BaseActivity{
+	private AsyncFacebookRunner mAsyncRunner; // 비동기 요청 처리를 위한 객체
+	private ProgressDialog progressDialog; 		// 진행상태 다이얼로그
+	private SharedPreferences mPrefs; 			// 공유환경설정
+	private Handler mHandler = new Handler();	// UI 업데이트를 위한 핸들러
+	private ArrayList<Friend> friends = new ArrayList<Friend>();// 내 담벼락들을 담을 list
+    private FriendsArrayAdapater friendsArrayAdapater;			// 커스텀 array adapter	
+	
+	// 엘리먼트
+	private ListView listView;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.friends_layout);
+		mLockScreenRotation();
+		/*
+		 * 공유 환경 설정에서 액세스 토큰 가져오기
+		 */
+		mPrefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+		String access_token = mPrefs.getString("access_token", null);
+		long expires = mPrefs.getLong("access_expires", 0);
+		if (access_token != null) {
+			facebook.setAccessToken(access_token); // 토큰 설정
+		}
+		if (expires != 0) {
+			facebook.setAccessExpires(expires); // 토큰 만료 설정
+		}
+		
+		// 엘리먼트 후킹
+		listView = (ListView)findViewById(R.id.friends);
+
+		
+		// 데이터를 가져올동안 진행상태 다이얼로그를 표시
+		progressDialog = new ProgressDialog(this);
+		progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		progressDialog.setMessage("로딩중...");		
+		progressDialog.show();
+        mAsyncRunner = new AsyncFacebookRunner(facebook);
+		// graph API 요청 
+		mAsyncRunner.request("me/friends", new FriendsRequestListener());        
+	}
+	
+    /**
+     *	me/friends 친구요청 콜백 클래스
+     */
+    public class FriendsRequestListener implements
+    com.facebook.android.AsyncFacebookRunner.RequestListener {
+
+		@Override
+		public void onComplete(String response, Object state) {
+			// TODO Auto-generated method stub
+            try {
+                // process the response here: executed in background thread
+                Log.d("myfacebook", "response.length(): " + response.length());
+                Log.d("myfacebook", "Response: " + response);
+
+                final JSONObject json = new JSONObject(response);
+                JSONArray d = json.getJSONArray("data");
+                final int l = (d != null ? d.length() : 0);
+                Log.d("myfacebook", "d.length(): " + l);
+                String name, id, picture;	// 이름, 아이디, 사진명
+                Bitmap picBitmap = null;			// 디코딩된 비트맵
+                Friend friend;
+                for (int i=0; i<l; i++) {
+                    JSONObject object = d.getJSONObject(i);
+                    friend = new Friend();
+                    name = object.getString("name");
+                    id = object.getString("id");
+                    // 아이디를 이용하여 친구의 프로필 이미지 url을 조립한다.
+                    picture = "http://graph.facebook.com/" + id + "/picture";
+                    picBitmap = null;
+            		if( !TextUtils.isEmpty(picture) ){	
+            			URL url = null;
+            			try {
+            				url = new URL(picture);
+            				// 비트맵으로 변환후 이미를 넣어준다.
+            				picBitmap = BitmapFactory.decodeStream(url.openStream());	
+            			} catch (MalformedURLException e) {
+            				// TODO Auto-generated catch block
+            				e.printStackTrace();
+            			} catch (IOException e) {
+            				// TODO Auto-generated catch block
+            				e.printStackTrace();
+            			}
+            		}
+            		
+                    friend.setId(id);
+                    friend.setName(name);                    
+                    friend.setPicture(picBitmap);
+                    friends.add(friend);	// 추출된 정보는 리스트에 담는다.
+                }
+                
+                // ui 변경은 쓰레드로 처리해야한다.
+                MyFriends.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                    	// 타이틀 바 변경
+                        getWindow().setTitle("친구목록(" + l + "명)");
+                    	friendsArrayAdapater = new FriendsArrayAdapater(friends);
+                        listView.setAdapter(friendsArrayAdapater);
+                        friendsArrayAdapater.notifyDataSetChanged();
+                    }
+                });
+            } catch (JSONException e) {
+                Log.w("myfacebook", "json error");
+            }finally{
+            	progressDialog.dismiss();	// 다이얼로그를 닫는다.
+            	unLockScreenRotation();		// 화면 잠금 해제
+            }
+		}
+
+		@Override
+		public void onIOException(IOException e, Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+		}
+
+		@Override
+		public void onFileNotFoundException(FileNotFoundException e,
+				Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+			unLockScreenRotation();		
+		}  
+
+		@Override
+		public void onMalformedURLException(MalformedURLException e,
+				Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+			unLockScreenRotation();	
+		}
+
+		@Override
+		public void onFacebookError(FacebookError e, Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+			unLockScreenRotation();	
+		}
+    }
+
+}

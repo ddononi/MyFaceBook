@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+	<TextView
+		 android:layout_width="match_parent"
+		 android:layout_height="70px"
+		 android:textColor="#3b5998"
+		 android:paddingLeft="10dp"
+		 android:gravity="center_vertical"
+		 android:shadowDx="1"
+		 android:shadowDy="1"
+		 android:shadowRadius="2"
+		 android:shadowColor="@color/select"
+		 android:textStyle="bold"
+		 android:layout_centerVertical="true"
+		 android:textAppearance="?android:attr/textAppearanceSmallInverse"
+		 android:background="@drawable/selector"
+		 android:id="@+id/place"
+		 android:tag="text"
+	 />
+     <ImageView
+         android:tag="button"
+         android:id="@+id/checkin"
+         android:layout_width="40px"
+         android:layout_height="40px"
+         android:layout_alignParentRight="true"
+         android:layout_centerInParent="true"
+         android:padding="10dp"
+         android:layout_marginRight="15dp"
+         android:background="@drawable/checkin"
+         android:scaleType="fitCenter" />	
+
+ </RelativeLayout>

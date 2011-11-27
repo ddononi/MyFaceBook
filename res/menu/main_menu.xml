@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/logout" android:title="로그아웃"/>
+    <item android:id="@+id/mefeed" android:title="내담벼락"/>
+    <item android:id="@+id/getfriends" android:title="친구리스트"/>
+    <item android:id="@+id/findfriends" android:title="친구추가"/>
+    <item android:id="@+id/checkins" android:title="체크인"/>
+    <item android:id="@+id/setting" android:title="설정" />
+</menu>

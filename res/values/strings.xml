@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyFaceBook</string>
+    
+    <!--  업데이트 시간 설정값 -->    
+    <string name="default_value_list_preference">10</string>    
+    <string-array name="time_list_preference">
+        <item>1시간</item>
+        <item>30분</item>
+        <item>10분</item>
+        <item>5분</item>
+        <item>3분</item>
+    </string-array>
+    
+    <string-array name="time_list_value_preference">
+        <item>60</item>
+        <item>30</item>
+        <item>10</item>
+        <item>5</item>
+        <item>3</item>
+    </string-array>
+        
+</resources>

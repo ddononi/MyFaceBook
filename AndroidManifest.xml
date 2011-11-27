@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kr.co.sns"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".StartActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="MyFaceBookActivity"></activity>
+        <activity android:name="MyProfile"></activity>
+        <activity android:name="MyFriends"></activity>
+        
+	    <receiver android:name=".MyReceiver" />
+	    <service android:name=".MyService"></service>
+	    <activity android:name="SettingActivity"></activity>
+	    <activity android:name=".FindFriendsActivity"></activity>
+	    <activity android:name="CheckInActivity"></activity>          
+    </application>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+</manifest>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/normal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/titlebar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/select"
+        android:gravity="center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:textColor="#f7f3f7"
+        android:textStyle="bold" >
+
+        <ImageButton
+            android:id="@+id/profile_image"
+            android:layout_width="110px"
+            android:layout_height="110px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitCenter"
+            android:background="#ffffffff"
+            android:src="@drawable/genericfriendicon" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/profile_image"
+            android:text=""
+            android:textColor="#f7f3f7"
+            android:textSize="18dp" />
+
+        <ImageButton
+            android:id="@+id/write"
+            android:layout_width="60px"
+            android:layout_height="60px"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/wallpost"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+	<LinearLayout
+		android:background="#5a9af7"
+	 	android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:padding="1dp"
+	  	android:layout_height="1dp" /> 
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#f7f3f7"
+        android:cacheColorHint="#00000000" />
+
+</LinearLayout>
