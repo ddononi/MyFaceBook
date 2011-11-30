@@ -148,6 +148,14 @@ public class MyProfile extends BaseActivity {
 				final JSONObject json = new JSONObject(response);
 				final String name = json.getString("name"); // 이름 추출
 				String id = json.getString("id"); // 아이디 추출
+				// 아이디값이 저장되지 않았으면 아이디 저장
+				if( TextUtils.isEmpty(mPrefs.getString("id", ""))  ){
+					SharedPreferences.Editor editor = mPrefs.edit();
+					editor.putString("id", id);	// 아이디값 저장
+					editor.commit();
+				}
+
+				
 				final String link = "http://m.facebook.com/profile.php"  ;//json.getString("link"); // 유저 프로필 URL
 				Log.d("myfacebook", "name------>" + name);
 

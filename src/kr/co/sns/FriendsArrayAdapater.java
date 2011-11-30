@@ -30,9 +30,10 @@ import android.widget.Toast;
 
 public class FriendsArrayAdapater extends BaseAdapter {
 	private ArrayList<?> list;
-	private String name;
-	public FriendsArrayAdapater(ArrayList<?> list ){
+	private String id;	// 내 아이디값
+	public FriendsArrayAdapater(ArrayList<?> list, String id){
 		this.list = list;
+		this.id = id;
 	}
 
 	
@@ -82,7 +83,7 @@ public class FriendsArrayAdapater extends BaseAdapter {
 				link.append("?id=");	
 				link.append(id);	// id를 붙여준다.
 				link.append("&_user=");	
-				link.append(BaseActivity.APP_ID);	// 내 앱 아이디
+				link.append(FriendsArrayAdapater.this.id);	// 내 아아디
 				Intent intent = new Intent();
 				intent.setAction(Intent.ACTION_VIEW); // 웹페이즈를 뛰울 인텐트 설정
 				intent.setData(Uri.parse(link.toString())); // url 설정

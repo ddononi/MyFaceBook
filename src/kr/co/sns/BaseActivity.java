@@ -11,6 +11,7 @@ import com.facebook.android.FacebookError;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -33,7 +34,7 @@ public class BaseActivity extends Activity {
 	 * "C:\Documents and Settin gs\ddononi\.android\debug.keystore" | openssl
 	 * sha1 -binary | openssl base64 생성된 키값을 페이스북 개발자 페이지
 	 * https://developers.facebook.com/apps 에 등록하면 앱아이디를 얻을수있다.
-	 */
+	 */								
 	public static final String APP_ID = "102239696559238"; // 페이스북 인증에 사용될 앱 아이디
 	public static final String SHARED_PREFERENCE = "mypreference";
 	// 페이스북을 사용할려면 반드시 생성되어야할 기본 객체
@@ -87,8 +88,9 @@ public class BaseActivity extends Activity {
 			finish();
 			return true;
 		case R.id.findfriends:	// 친구찿기
+			SharedPreferences mPrefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
 			String url = "http://m.facebook.com/profile.php#!/findfriends.php?ref=bookmark&_user="
-					+ APP_ID;
+					+ mPrefs.getString("id","");
 			// 모바일 형식으로 url을 구성한다.
 			intent = new Intent();
 			intent.setAction(Intent.ACTION_VIEW); // 웹페이즈를 뛰울 인텐트 설정

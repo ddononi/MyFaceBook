@@ -68,23 +68,12 @@ public class CheckInsArrayAdapater extends BaseAdapter {
 
 		final int pos = position;
 		final Context context = parent.getContext();
-		// 친구 이름을 클릭하면 친구의 프로필 웹 페이지로 이동한다.
+
 		nameTV.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				/*
-				StringBuilder link = new StringBuilder("http://m.facebook.com/profile.php");
-				String id = ((Friend)getItem(pos)).getId();
-				link.append("?id=");	
-				link.append(id);	// id를 붙여준다.
-				link.append("&_user=");	
-				link.append(BaseActivity.APP_ID);	// 내 앱 아이디
-				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW); // 웹페이즈를 뛰울 인텐트 설정
-				intent.setData(Uri.parse(link.toString())); // url 설정
-				context.startActivity(intent);
-				*/
+
 			}
 		});
 

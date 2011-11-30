@@ -136,7 +136,7 @@ public class MyFriends extends BaseActivity{
                     public void run() {
                     	// 타이틀 바 변경
                         getWindow().setTitle("친구목록(" + l + "명)");
-                    	friendsArrayAdapater = new FriendsArrayAdapater(friends);
+                    	friendsArrayAdapater = new FriendsArrayAdapater(friends, mPrefs.getString("id","") );
                         listView.setAdapter(friendsArrayAdapater);
                         friendsArrayAdapater.notifyDataSetChanged();
                     }

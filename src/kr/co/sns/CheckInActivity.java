@@ -74,7 +74,7 @@ public class CheckInActivity extends BaseActivity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// 모바일 형식으로 url을 구성한다.
-				String url = "http://m.facebook.com/places/nearbyfriends.php?ref=bookmark&_user=" + APP_ID;
+				String url = "http://m.facebook.com/places/nearbyfriends.php?ref=bookmark&_user=" + mPrefs.getString("id","");
 
 				Intent intent = new Intent();
 				intent.setAction(Intent.ACTION_VIEW); // 웹페이즈를 뛰울 인텐트 설정
