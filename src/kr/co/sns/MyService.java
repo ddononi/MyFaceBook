@@ -61,7 +61,7 @@ public class MyService extends Service implements Runnable{
 			e.printStackTrace();
 		}
 		// 일정간격으로 아이디값 추출
-		handler.postDelayed(this, 1000 * 6 * repeatTime );
+		handler.postDelayed(this, 1000 * 60 * repeatTime );
 		Log.d("myfacebook", "starting service!!");
 		return 0;
 	}
@@ -123,7 +123,7 @@ public class MyService extends Service implements Runnable{
 			
 			// 아이디값이 같은면 게시물의 추가나 삭제가 없다고 판단
 			if( oldId.equals(checkUpdateWall())){
-				handler.postDelayed(this, 1000 * 6 * repeatTime );
+				handler.postDelayed(this, 1000 * 60 * repeatTime );
 			}else{
 				oldId = checkUpdateWall();
 				Log.d("myfacebook","do receiver");
@@ -133,7 +133,7 @@ public class MyService extends Service implements Runnable{
 				PendingIntent sender = PendingIntent.getBroadcast(getBaseContext(),
 						0,  i, PendingIntent.FLAG_CANCEL_CURRENT);				
 				sender.send();		// 브로드케스팅
-				handler.postDelayed(this, 1000 * 6 * repeatTime );
+				handler.postDelayed(this, 1000 * 60 * repeatTime );
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

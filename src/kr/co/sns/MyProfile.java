@@ -52,6 +52,9 @@ public class MyProfile extends BaseActivity {
 	private ImageButton wallPostBtn; // wall post 버튼
     private ListView listView;		 // 내 담벼락 리스트
 	/** Called when the activity is first created. */
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,6 +115,27 @@ public class MyProfile extends BaseActivity {
 				intent.setData(Uri.parse(link.toString())); // url 설정
 				startActivity(intent);
 		
+			}
+		});
+		
+		// 샘플로 사진 올리기....
+		nameTV.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(progressDialog.isShowing() != true){
+					progressDialog.show();
+				}
+				
+				// 꾸러미를 이용해 사진 url을 실어 보내주면 됩니다. photo_upload permission도 추가되야 합니다.
+            	Bundle params = new Bundle();
+            	// 여기서 이미지 주소를 넣어주시면 됩니다.
+            	params.putString("url", "http://www.breaktheillusion.com/wp-content/uploads" +
+            			"/2011/05/smiley-face-photo-co-theoutsourcingcompanycom.jpg");
+                params.putString("caption", "사진 샘플올리기");
+                mAsyncRunner.request("me/photos", params, "POST",
+                        new PhotoUploadListener(), null);
 			}
 		});
 		
@@ -440,6 +464,55 @@ public class MyProfile extends BaseActivity {
 			
 		}
 	}
+	
+	/**
+	 *	사진 업로드 다이얼로그에 들어갈 요청 리스너
+	 */
+	public class PhotoUploadListener implements
+			com.facebook.android.AsyncFacebookRunner.RequestListener {
+
+		/**
+		 * Called when the wall post request has completed
+		 */
+
+		@Override
+		public void onComplete(String response, Object state) {
+			// TODO Auto-generated method stub
+			Log.d("myfacebook", "response-->" + response);
+			progressDialog.dismiss();
+			MyProfile.this.runOnUiThread(new Runnable() {
+                public void run() {
+                	Util.showAlert(MyProfile.this, "성공",  "사진을 업로드했습니다.");	
+                }
+            });			
+		}
+
+		@Override
+		public void onIOException(IOException e, Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+		}
+
+		@Override
+		public void onFileNotFoundException(FileNotFoundException e,
+				Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+		}
+
+		@Override
+		public void onMalformedURLException(MalformedURLException e,
+				Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+		}
+
+		@Override
+		public void onFacebookError(FacebookError e, Object state) {
+			// TODO Auto-generated method stub
+			progressDialog.dismiss();
+		}
+	}	
 	
 	
 }

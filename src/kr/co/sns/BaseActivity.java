@@ -47,7 +47,7 @@ public class BaseActivity extends Activity {
 	 * http://developers.facebook.com/docs/reference/api/permissions/
 	 */
 	public static final String[] PERMISSIONS = new String[] { "publish_stream",
-			"read_stream", "offline_access", "user_checkins" };
+			"read_stream", "offline_access", "user_checkins", "user_photos", "publish_checkins", "photo_upload" };
 
 	/**
 	 * 메뉴키를 누를때 발생되는 옵션메뉴 처리
